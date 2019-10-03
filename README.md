@@ -395,7 +395,8 @@ const scope = nock('http://www.google.com')
   })
 ```
 
-> Note: When using a callback, if you call back with an error as the first argument, that error will be sent in the response body, with a 500 HTTP response status code.
+In Nock 11 and later, if an error is passed to the callback, Nock will rethrow it as a programmer error.
+In Nock 10 and earlier, the error was sent in the response body, with a 500 HTTP response status code.
 
 You can also return the status code and body using just one function:
 
@@ -1006,7 +1007,7 @@ const scope = nock('http://example.com')
 
 Note that while a persisted scope will always intercept the requests, it is considered "done" after the first interception.
 
-If you want to stop persisting a persistent nock you can call `persist(false)`:
+If you want to stop persisting an individual persisted mock you can call `persist(false)`:
 
 ```js
 const scope = nock('http://example.com')
@@ -1018,6 +1019,8 @@ const scope = nock('http://example.com')
 
 scope.persist(false)
 ```
+
+You can also use `nock.cleanAll()` which removes all mocks, including persistent mocks.
 
 To specify an exact number of times that nock should repeat the response, use [.times()](#repeat-response-n-times).
 
